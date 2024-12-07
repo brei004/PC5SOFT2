@@ -1,0 +1,22 @@
+---
+- name: Actualizar los paquetes del sistema
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Configurar la zona horaria y locales
+  timezone:
+    name: "America/Lima"
+
+- name: Crear un grupo llamado admin
+  group:
+    name: admin
+    state: present
+
+- name: Crear un usuario devuser perteneciente al grupo admin con contraseña cifrada
+  user:
+    name: devuser
+    groups: admin
+    shell: /bin/bash
+    password: "{{ 'mi_contraseña_secreta' | password_hash('sha512') }}"
+    state: present
